@@ -11,7 +11,7 @@ import sys
 
 class OpenSubtitles:
 	OPENSUBTITLES_DOMAIN = "http://api.opensubtitles.org/xml-rpc"
-	OPENSUBTITLES_USERAGENT = "OS Test User Agent"
+	OPENSUBTITLES_USERAGENT = "Mozilla/5.0 (X11; Linux x86_64; rv:25.0) Gecko/20100101 Firefox/25.0"
 	server = None
 
 	def __init__(self, db, logging, osdomain, osua):
@@ -86,8 +86,12 @@ class OpenSubtitles:
 			   "season" : str(season),
 			   "episode" : str(episode),
 		}
-		self.resp = self.server.SearchSubtitles(self.token, [ search ])
-		if self.resp['data']:
+		try:
+			self.resp = self.server.SearchSubtitles(self.token, [ search ])
+		except:
+			return False
+		
+		if 'data' in self.resp and self.resp['data']:
 			return self.resp['data'][0]
 		else:
 			search = { "sublanguageid" 	: language,
@@ -95,8 +99,12 @@ class OpenSubtitles:
 				   "season"		: str(season),
 				   "episode"		: str(episode),
 			}
-			self.resp = self.server.SearchSubtitles(self.token, [ search ])
-			if self.resp['data']:
+			try:
+				self.resp = self.server.SearchSubtitles(self.token, [ search ])
+			except:
+				return False
+			
+			if 'data' in self.resp and self.resp['data']:
 				return self.resp['data'][0]
 			else:
 				return False

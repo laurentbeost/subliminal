@@ -17,13 +17,19 @@ class bierdopje:
 	def do_request(self, url):
 		headers = { 'User-Agent' : self.useragent }
 		self.req = urllib2.Request(url, None, headers)
-		self.resp = urllib2.urlopen(self.req)
+		try:
+			self.resp = urllib2.urlopen(self.req)
+		except:
+			self.resp = None
 	
 	def RetrieveSubs(self, tvdbid, season, episode, language):
 		self.logging.debug("         Retrieving subtitles from bierdopje")
 		url = self.bierdopjeurl + "GetAllSubsFor/" + str(tvdbid) + "/" + str(season) + "/" + str(episode) + "/" + language + "/true"
 		self.do_request(url)
-		dom = minidom.parse(self.resp)
+		try:
+			dom = minidom.parse(self.resp)
+		except:
+			return False
 		for node in dom.getElementsByTagName("result"):
 			filename = node.getElementsByTagName("filename")[0].firstChild.data
 			link = node.getElementsByTagName("downloadlink")[0].firstChild.data
