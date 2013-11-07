@@ -270,8 +270,12 @@ class subliminal(Daemon):
 		extracted['showname'] = data[2]
 		episodedetails = self.GetEpisodeDetails(tvdbid, int(extracted['season']), int(extracted['episode']))
 		extension = os.path.splitext(fullpath)[1]
-		newFilename = location + "/" + self.valifyFilename(extracted['showname'] + " - s" + extracted['season'] + "e" + extracted['episode'] + " - " + episodedetails['name'] + extension);
-		if os.path.exists(newFilename):
+		if self.config['rename_movies'] == "1":
+			newFilename = location + "/" + self.valifyFilename(extracted['showname'] + " - s" + extracted['season'] + "e" + extracted['episode'] + " - " + episodedetails['name'] + extension);
+		else:
+			newFilename = location + "/" + filename
+
+		if os.path.exists(newFilename) and self.config['rename_movies'] == "1":
 			logging.warning("		Warning: New file already exists, adding .1")
 			nr = 1
 			checkFilename = newFilename + "." + str(nr)
@@ -310,11 +314,14 @@ class subliminal(Daemon):
 				   "filesize"		: filesize }
 			self.cur.execute(qry, values)
 			self.db.commit()
-			logging.info("		Moving '"+fullpath+"' to '"+newFilename+"'")
-			shutil.move(fullpath, newFilename)
-			logging.info("		Moved !")
-			url = self.sickbeardURL + "?cmd=show.refresh&tvdbid=" + str(tvdbid)
-			self.do_request(url)
+			
+			if self.config['rename_movies'] == "1":
+				logging.info("		Moving '"+fullpath+"' to '"+newFilename+"'")
+				shutil.move(fullpath, newFilename)
+				logging.info("		Moved !")
+				url = self.sickbeardURL + "?cmd=show.refresh&tvdbid=" + str(tvdbid)
+				self.do_request(url)
+
 		if self.config['remove_subdirectory'] == "1":
 			self.SafeRemoveDir(os.path.dirname(fullpath))
 			
