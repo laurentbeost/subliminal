@@ -966,6 +966,16 @@ def checkConfig():
 			print "SMTPHOST = 127.0.0.1"
 			print
 			sys.exit(28)
+
+	if 'rename_movies' not in config:
+		config['rename_movies'] = 0
+	
+	if not config['rename_movies'].isdigit():
+		print 
+		print "ERROR: RENAME_MOVIES needs to be a number and not " + config['rename_movies']
+		print
+		sys.exit(29)
+
 	
 def main(argv):
 	global config
