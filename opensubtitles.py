@@ -65,7 +65,11 @@ class OpenSubtitles:
 
 		self.token = ""
 
-		self.resp = self.server.LogIn("", username, password, self.OPENSUBTITLES_USERAGENT)
+		try:
+			self.resp = self.server.LogIn("", username, password, self.OPENSUBTITLES_USERAGENT)
+		except:
+			return False
+
 		if self.resp['status'] == "200 OK":
 			self.token = self.resp['token']
 			return True
