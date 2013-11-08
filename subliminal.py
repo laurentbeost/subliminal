@@ -566,7 +566,7 @@ class subliminal(Daemon):
 		self.cur.execute("SELECT orgfilename, newname FROM downloaded")
 		rows = self.cur.fetchall()
 		purged = 0
-		logging.info("Purging database, delete downloaded entries")
+		logging.info("Purging database, deleting downloaded subtitles entries")
 		for row in rows:
 			orgfilename = row[0]
 			newname = row[1]
@@ -650,7 +650,7 @@ class subliminal(Daemon):
 
 		self.currentloops = 0
 
-		self.OpenSubtitles = opensubtitles.OpenSubtitles(self.db, logging, "http://api.opensubtitles.org/xml-rpc", "OS Test User Agent")
+		self.OpenSubtitles = opensubtitles.OpenSubtitles(self.db, logging, "http://api.opensubtitles.org/xml-rpc")
 		if self.OpenSubtitles.login():
 			logging.debug("Successfully logged in to OpenSubtitles")
 		else:

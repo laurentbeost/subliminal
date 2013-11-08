@@ -14,7 +14,7 @@ class OpenSubtitles:
 	OPENSUBTITLES_USERAGENT = "Mozilla/5.0 (X11; Linux x86_64; rv:25.0) Gecko/20100101 Firefox/25.0"
 	server = None
 
-	def __init__(self, db, logging, osdomain, osua):
+	def __init__(self, db, logging, osdomain):
 
 		self.db = db
 		if db != None:
@@ -22,8 +22,6 @@ class OpenSubtitles:
 		self.logging = logging
 		if osdomain != None:
 			self.OPENSUBTITLES_DOMAIN = osdomain
-		if osua != None:
-			self.OPENSUBTITLES_USERAGENT = osua
 
 	def hashFile(self, name):
 		try: 
