@@ -273,7 +273,7 @@ class subliminal(Daemon):
 		if self.config['rename_movies'] == "1":
 			newFilename = location + "/" + self.valifyFilename(extracted['showname'] + " - s" + extracted['season'] + "e" + extracted['episode'] + " - " + episodedetails['name'] + extension);
 		else:
-			newFilename = location + "/" + filename
+			newFilename = fullpath
 
 		if os.path.exists(newFilename) and self.config['rename_movies'] == "1":
 			logging.warning("		Warning: New file already exists, adding .1")
